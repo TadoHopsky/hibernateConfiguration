@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.List;
+
 public class App {
     public static void main( String[] args ) {
         Configuration configurationHibernate = new Configuration().addAnnotatedClass(Person.class);
@@ -49,5 +51,21 @@ public class App {
             sessionDelete.flush();
             sessionDelete.getTransaction().commit();
         }
+
+        /*
+        =============================================================
+        ========================= HQL ===============================
+        =============================================================
+        */
+
+        // Получение всех пользователей HQL запрос [" FROM PERSON "]
+        try (Session sessionGetAllHQL = sessionFactory.openSession()) {
+            sessionGetAllHQL.beginTransaction();
+            List<Person> personsList = sessionGetAllHQL.createQuery("from Person").getResultList();
+            for (Person person : personsList) {
+                System.out.println(person);
+            }
+        }
+
     }
 }
