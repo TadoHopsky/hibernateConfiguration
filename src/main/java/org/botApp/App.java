@@ -9,21 +9,45 @@ public class App {
     public static void main( String[] args ) {
         Configuration configurationHibernate = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configurationHibernate.buildSessionFactory();
-        Session session = sessionFactory.openSession();
 
-        // Добавление пользователя в БД
-        session.beginTransaction();
-        session.persist(new Person("Tado Hopsky", 25));
-        session.persist(new Person("Kseniya Frolova", 27));
-        session.persist(new Person("Daniil Ostroverkh", 25));
-        session.getTransaction().commit();
+//        // Добавление пользователя в БД
+//        try (Session sessionAppend = sessionFactory.openSession()) {
+//            sessionAppend.beginTransaction();
+//            sessionAppend.persist(new Person("Tado Hopsky", 25));
+//            sessionAppend.persist(new Person("Kseniya Frolova", 27));
+//            sessionAppend.persist(new Person("Daniil Ostroverkh", 25));
+//            sessionAppend.getTransaction().commit();
+//        }
+//
+//        // Получение пользователя с ID = 1
+//        try (Session sessionGetUserWithID = sessionFactory.openSession()) {
+//            sessionGetUserWithID.beginTransaction();
+//            Person getPerson = sessionGetUserWithID.find(Person.class, 1);
+//            System.out.println(getPerson);
+//            sessionGetUserWithID.getTransaction().commit();
+//        }
+//
+        // Обновление данных пользователя с ID = 1
+        try (Session sessionUpdate = sessionFactory.openSession()) {
+            sessionUpdate.beginTransaction();
+            try{
+                Person getPersonForUpdate = sessionUpdate.find(Person.class, 2);
+                getPersonForUpdate.setName("NEW NAME");
+                getPersonForUpdate.setAge(99);
+                sessionUpdate.getTransaction().commit();
+            }catch (Exception e){
+                sessionUpdate.getTransaction().rollback();
+                System.out.println("Пользователя с таким ID не существует :(");
+            }
+        }
 
-        // Получение пользователя с ID = 1
-        session.beginTransaction();
-        Person getPerson = session.find(Person.class, 1);
-        System.out.println(getPerson);
-        session.getTransaction().commit();
-
-        session.close();
+        // Удаление пользователя с ID = 1
+//        try (Session sessionDelete = sessionFactory.openSession()) {
+//            sessionDelete.beginTransaction();
+//            Person personForDelete = sessionDelete.find(Person.class, 1);
+//            sessionDelete.remove(personForDelete);
+//            sessionDelete.flush();
+//            sessionDelete.getTransaction().commit();
+//        }
     }
 }
