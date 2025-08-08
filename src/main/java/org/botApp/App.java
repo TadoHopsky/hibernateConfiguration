@@ -10,23 +10,23 @@ public class App {
         Configuration configurationHibernate = new Configuration().addAnnotatedClass(Person.class);
         SessionFactory sessionFactory = configurationHibernate.buildSessionFactory();
 
-//        // Добавление пользователя в БД
-//        try (Session sessionAppend = sessionFactory.openSession()) {
-//            sessionAppend.beginTransaction();
-//            sessionAppend.persist(new Person("Tado Hopsky", 25));
-//            sessionAppend.persist(new Person("Kseniya Frolova", 27));
-//            sessionAppend.persist(new Person("Daniil Ostroverkh", 25));
-//            sessionAppend.getTransaction().commit();
-//        }
-//
-//        // Получение пользователя с ID = 1
-//        try (Session sessionGetUserWithID = sessionFactory.openSession()) {
-//            sessionGetUserWithID.beginTransaction();
-//            Person getPerson = sessionGetUserWithID.find(Person.class, 1);
-//            System.out.println(getPerson);
-//            sessionGetUserWithID.getTransaction().commit();
-//        }
-//
+        // Добавление пользователя в БД
+        try (Session sessionAppend = sessionFactory.openSession()) {
+            sessionAppend.beginTransaction();
+            sessionAppend.persist(new Person("Tado Hopsky", 25));
+            sessionAppend.persist(new Person("Kseniya Frolova", 27));
+            sessionAppend.persist(new Person("Daniil Ostroverkh", 25));
+            sessionAppend.getTransaction().commit();
+        }
+
+        // Получение пользователя с ID = 1
+        try (Session sessionGetUserWithID = sessionFactory.openSession()) {
+            sessionGetUserWithID.beginTransaction();
+            Person getPerson = sessionGetUserWithID.find(Person.class, 1);
+            System.out.println(getPerson);
+            sessionGetUserWithID.getTransaction().commit();
+        }
+
         // Обновление данных пользователя с ID = 1
         try (Session sessionUpdate = sessionFactory.openSession()) {
             sessionUpdate.beginTransaction();
@@ -42,12 +42,12 @@ public class App {
         }
 
         // Удаление пользователя с ID = 1
-//        try (Session sessionDelete = sessionFactory.openSession()) {
-//            sessionDelete.beginTransaction();
-//            Person personForDelete = sessionDelete.find(Person.class, 1);
-//            sessionDelete.remove(personForDelete);
-//            sessionDelete.flush();
-//            sessionDelete.getTransaction().commit();
-//        }
+        try (Session sessionDelete = sessionFactory.openSession()) {
+            sessionDelete.beginTransaction();
+            Person personForDelete = sessionDelete.find(Person.class, 1);
+            sessionDelete.remove(personForDelete);
+            sessionDelete.flush();
+            sessionDelete.getTransaction().commit();
+        }
     }
 }
